@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    <script src="_javascript/java.js" type="text/javascript"></script>
+    <script
+      src="_javascript/jquery.mobile.custom.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+      type="text/javascript"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans|Slabo+27px"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="tribute.css" />
+    <script>
+      var onAbout = false;
+      var onHeader = true;
+      var onLast = false;
+      var scrollDest;
+
+      var animTime = 1500;
+
+      var lastScrollTop = 0;
+
+      var intervalID = window.setInterval(ArrowTime, 50);
+      var intervalID2;
+      var intervalID3;
+      var intervalID4;
+
+      var shouldGsDown = true;
+      var gs = 250;
+      var canSpawn = true;
+
+      var offset = 0.2;
+      var opacity = 0;
+      var opacityFinal;
+      var el;
+      var opDown = false;
+
+      var initialGrow = 0;
+      var growAllowed = 1;
+      var growDone = false;
+
+      var isMobile = false;
+
+      window.onbeforeunload = function () {
+        window.scrollTo(0, 0);
+      };
+
+      window.onload = function () {
+        $("#arrow-up-div").hide();
+        if (
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          )
+        ) {
+          isMobile = true;
+        }
+      };
+
+      $(document).ready(function () {
+        resizeDiv();
+      });
+
+      window.onresize = function (event) {
+        resizeDiv();
+      };
+
+      $(document).on({
+        mousewheel: function (e) {
+          var famosoBody = $(document.body);
+
+          if (e.target.id == "el") return;
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (
+            (e.originalEvent.wheelDelta >= 0 &&
+              !famosoBody.is(":animated") &&
+              onHeader == false) ||
+            e.type == "swipeup"
+          ) {
+            console.log("Scroll up");
+            if (canSpawn == true) {
+              intervalID2 = window.setInterval(GrayscaleTrigger, 25);
+            }
+
+            if (onLast == true) {
+              scrollDest = "#about";
+              onHeader = false;
+              onAbout = true;
+              onLast = false;
+              $("#arrow-div").show();
+              $("#end").fadeTo(100, 0);
+            } else if (onAbout == true) {
+              scrollDest = "#landing";
+              onHeader = true;
+              onAbout = false;
+              onLast = false;
+              $("#arrow-up-div").hide();
+            }
+            $([document.documentElement, document.body]).animate(
+              {
+                scrollTop: $(scrollDest).offset().top,
+              },
+              animTime
+            );
+          } else if (
+            (e.originalEvent.wheelDelta < 0 &&
+              !famosoBody.is(":animated") &&
+              onLast == false) ||
+            (e.type == "swipedown" &&
+              !famosoBody.is(":animated") &&
+              onLast == false)
+          ) {
+            if (canSpawn == true) {
+              intervalID2 = window.setInterval(GrayscaleTrigger, 25);
+            }
+
+            if (onHeader == true) {
+              scrollDest = "#about";
+              onHeader = false;
+              onAbout = true;
+              onLast = false;
+              $("#arrow-up-div").show();
+            } else if (onAbout == true) {
+              scrollDest = "#last";
+              onHeader = false;
+              onAbout = false;
+              onLast = true;
+              $("#arrow-div").hide();
+              if (growDone == false) {
+                intervalID3 = window.setInterval(StartGrow, 15);
+                intervalID4 = window.setInterval(StartGrowDown, 15);
+              } else {
+                $("#end").fadeTo(1000, 1);
+              }
+            }
+            console.log("Scroll down");
+            $([document.documentElement, document.body]).animate(
+              {
+                scrollTop: $(scrollDest).offset().top,
+              },
+              animTime
+            );
+          }
+        },
+      });
+
+      function StartGrow() {
+        initialGrow += 0.5;
+        $(".growing-block-right").css("width", initialGrow + "%");
+        if (initialGrow > 99.5) {
+          initialGrow = 99.5;
+        }
+        for (i = 0; i < 5; i++) {
+          var currentHeight;
+
+          if (initialGrow >= i * 25 || initialGrow + i == 103.5) {
+            currentHeight =
+              ($("#up" + i).height() /
+                $("#up" + i)
+                  .parent()
+                  .height()) *
+              100;
+            var roundedHeight = Math.round(currentHeight);
+            if (roundedHeight < 100) {
+              roundedHeight += 1.5;
+              $("#up" + i).css("height", roundedHeight + "%");
+            }
+          }
+          if (roundedHeight >= 100) {
+            $("#upbox" + i).fadeTo(500, 1);
+          }
+          if (i == 4 && roundedHeight >= 100) {
+            $("#end").fadeTo(1000, 1);
+            growDone = true;
+            window.clearInterval(intervalID3);
+          }
+        }
+      }
+
+      function StartGrowDown() {
+        for (i = 0; i < 4; i++) {
+          var currentHeight;
+          var iConv = i + 1;
+          if (iConv == 1 || iConv == 4) {
+            if (iConv == 4) {
+              iConv = 7;
+            }
+            if (initialGrow > iConv * 12.5) {
+              currentHeight =
+                ($("#down" + i).height() /
+                  $("#down" + i)
+                    .parent()
+                    .height()) *
+                100;
+              var roundedHeight = Math.round(currentHeight);
+              if (roundedHeight < 100) {
+                roundedHeight += 1.5;
+                $("#down" + i).css("height", roundedHeight + "%");
+              }
+            }
+          } else {
+            if (
+              (initialGrow > iConv * 18.8 && iConv != 3) ||
+              initialGrow > 62.5
+            ) {
+              currentHeight =
+                ($("#down" + i).height() /
+                  $("#down" + i)
+                    .parent()
+                    .height()) *
+                100;
+              var roundedHeight = Math.round(currentHeight);
+              if (roundedHeight < 100) {
+                roundedHeight += 1.5;
+                $("#down" + i).css("height", roundedHeight + "%");
+              }
+            }
+          }
+          if (roundedHeight >= 100) {
+            $("#downbox" + i).fadeTo(500, 1);
+          }
+
+          if (i == 3 && roundedHeight >= 100) {
+            window.clearInterval(intervalID4);
+          }
+        }
+      }
+
+      function ArrowTime() {
+        var famosoBody2 = $(document.body);
+        if (!famosoBody2.is(":animated")) {
+          for (i = 0; i <= 2; i++) {
+            offset = 0.05 * (i * 1.2);
+
+            if (opacity > 1) {
+              opDown = true;
+            } else if (opacity < -2) {
+              opDown = false;
+            }
+
+            if (opDown == false) {
+              opacity += 0.0001 + offset;
+            }
+            if (opDown == true) {
+              opacity = opacity - 0.0001 - offset;
+            }
+
+            if (opacity < 0.03) {
+              opacityFinal = 0.03;
+            } else if (opacity > 0.15) {
+              opacityFinal = 0.15;
+            } else {
+              opacityFinal = opacity;
+            }
+
+            $("#arrow" + i).attr("style", "opacity: " + opacityFinal + ";");
+            $("#arrowup" + i).attr("style", "opacity: " + opacityFinal + ";");
+          }
+        } else {
+          opacity = 0;
+          for (i = 0; i <= 2; i++) {
+            $("#arrow" + i).attr("style", "opacity: 0.03;");
+            $("#arrowup" + i).attr("style", "opacity: 0.03;");
+          }
+        }
+      }
+
+      function GrayscaleTrigger() {
+        var famosoBody3 = $(document.body);
+        if (gs < 0) {
+          gs = 0;
+          if (onAbout == true && !famosoBody3.is(":animated")) {
+            window.clearInterval(intervalID2);
+            canSpawn = true;
+          }
+        }
+        if (gs > 250) {
+          gs = 250;
+          if (onAbout == false && !famosoBody3.is(":animated")) {
+            window.clearInterval(intervalID2);
+            canSpawn = true;
+          }
+        }
+        if (gs > 0 && gs < 250) {
+          canSpawn = false;
+        }
+
+        if (onAbout == true) {
+          if (shouldGsDown == true) {
+            gs -= 1;
+          }
+
+          $("#about").css("filter", "grayscale(" + gs + "%)");
+        } else {
+          gs += 5;
+          $("#about").css("filter", "grayscale(" + gs + "%)");
+        }
+      }
+
+      function resizeDiv() {
+        var viewW = $(window).width() - 80;
+        var viewH = $(window).height() - 70;
+        if (viewH > 710) {
+          $(".block").css("height", viewH + "px");
+        }
+        if (viewW > 500) {
+          $(".block").css("width", viewW + "px");
+        }
+        if (onAbout == true) {
+          $([document.documentElement, document.body]).animate(
+            {
+              scrollTop: $("#about").offset().top,
+            },
+            1
+          );
+        }
+        if (onLast == true) {
+          $([document.documentElement, document.body]).animate(
+            {
+              scrollTop: $("#last").offset().top,
+            },
+            1
+          );
+        }
+      }
+    </script>
+    <link href="_css/styles.css" rel="stylesheet" />
+  </head>
+
+  <body id="main">
+    <div id="arrow-div">
+      <img
+        id="arrow2"
+        src="https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124353/arrow.png"
+      />
+      <img
+        id="arrow1"
+        src="https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124353/arrow.png"
+      />
+      <img
+        id="arrow0"
+        src="https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124353/arrow.png"
+      />
+    </div>
+
+    <div id="arrow-up-div">
+      <img
+        id="arrowup0"
+        src="https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124353/arrow.png"
+      />
+      <img
+        id="arrowup1"
+        src="https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124353/arrow.png"
+      />
+      <img
+        id="arrowup2"
+        src="https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124353/arrow.png"
+      />
+    </div>
+
+    <div class="block" id="landing">
+      <div id="land-panel">
+        <div class="content" id="landing-content">
+          <div class="language">
+            <a href="pt-br/tribute-ptbr.html"><img id="brazil" src="" /></a>
+            <img
+              id="usa"
+              src="https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124350/usa-flag.png"
+              style="opacity: 0.35"
+            />
+          </div>
+          <div id="header" class="container">
+            <h1 id="title">Walter Elias Disney</h1>
+            <h2 id="sub-title">
+              <em
+                >"All our dreams can come true, if we have the courage to
+                pursue them."</em
+              >
+            </h2>
+          </div>
+          <div class="img-div" id="landing-img-div">
+            <img
+              id="image-landing"
+              src="https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124360/walt-disney-intro.png"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="block" id="about">
+      <div class="panel" id="about-panel">
+        <div class="img-div" id="img-div">
+          <img
+            id="image"
+            src="https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124352/walt-disney-portrait.jpg"
+          />
+          <p id="img-caption">
+            Walt Disney and his most famous creation: Mickey Mouse
+          </p>
+        </div>
+        <div class="content" id="about-text">
+          <h3>About</h3>
+          <p id="description">
+            Walter Elias Disney was an American entrepreneur, animator, voice
+            actor and film producer. A pioneer of the American animation
+            industry, he introduced several developments in the production of
+            cartoons. As a film producer, Disney holds the record for most
+            Academy Awards earned by an individual, having won 22 Oscars from 59
+            nominations. He was presented with two Golden Globe Special
+            Achievement Awards and an Emmy Award, among other honors. Several of
+            his films are included in the National Film Registry by the Library
+            of Congress.
+          </p>
+          <h3>Personality</h3>
+          <p id="tribute-info">
+            Disney was a shy, self-deprecating and insecure man in private but
+            adopted a warm and outgoing public persona. He had high standards
+            and high expectations of those with whom he worked. Although there
+            have been accusations that he was racist or anti-Semitic, they have
+            been contradicted by many who knew him. His reputation changed in
+            the years after his death, from a purveyor of homely patriotic
+            values to a representative of American imperialism. He nevertheless
+            remains an important figure in the history of animation and in the
+            cultural history of the United States, where he is considered a
+            national cultural icon. His film work continues to be shown and
+            adapted; his studio maintains high standards in its production of
+            popular entertainment, and the Disney amusement parks have grown in
+            size and number to attract visitors in several countries.
+          </p>
+          <h3>Career</h3>
+          <p>
+            Disney developed an early interest in drawing. He took art classes
+            as a boy and got a job as a commercial illustrator at the age of 18.
+            He moved to California in the early 1920s and set up the Disney
+            Brothers Studio with his brother Roy. With Ub Iwerks, Walt developed
+            the character Mickey Mouse in 1928, his first highly popular
+            success; he also provided the voice for his creation in the early
+            years. As the studio grew, Disney became more adventurous,
+            introducing synchronized sound, full-color three-strip Technicolor,
+            feature-length cartoons and technical developments in cameras. The
+            results, seen in features such as Snow White and the Seven Dwarfs
+            (1937), Pinocchio, Fantasia (both 1940), Dumbo (1941) and Bambi
+            (1942), furthered the development of animated film. New animated and
+            live-action films followed after World War II, including the
+            critically successful Cinderella (1950) and Mary Poppins (1964), the
+            latter of which received five Academy Awards.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="block" id="last">
+      <div class="growing-block-all">
+        <div class="upper-text-block">
+          <div
+            class="timeline-container topc small-container"
+            id="upbox0"
+            style="opacity: 0"
+          >
+            <h5>Walt Disney is born</h5>
+            <p>
+              Walt Disney was born in Chicago to parents Elias and Flora. His
+              given name was Walter Elias Disney.
+            </p>
+            <h4>1901</h4>
+          </div>
+          <div class="timeline-container topc" id="upbox1" style="opacity: 0">
+            <h5>Art school</h5>
+            <p>
+              Walt continued drawing, and when his family returned to Chicago he
+              enrolled in the Chicago Academy of Fine Arts. It was his dream to
+              work as a newspaper cartoonist.
+            </p>
+            <h4>1917</h4>
+          </div>
+          <div class="timeline-container topc" id="upbox2" style="opacity: 0">
+            <h5>Mickey Mouse is created</h5>
+            <p>
+              At the height of the talking-picture revolution, Walt created a
+              film called Steamboat Willie. It featured a talking mouse named
+              Mickey, and it was an instant hit. Walt, along with his brother
+              Roy, decided to play up Mickey's growing popularity. They created
+              a merchandise line and the Mickey Mouse Club, which quickly grew
+              to over one million members.
+            </p>
+            <h4>1928</h4>
+          </div>
+          <div class="timeline-container topc" id="upbox3" style="opacity: 0">
+            <h5>Disneyland opens</h5>
+            <p>
+              Walt Disney purchased land in California and built the Disneyland
+              theme park. They had over one million visitors in just two months.
+            </p>
+            <h4>1955</h4>
+          </div>
+          <div
+            class="timeline-container topc small-container"
+            id="upbox4"
+            style="opacity: 0"
+          >
+            <h5>Walt Disney Dies</h5>
+            <p>
+              At the age of 66, Walt Disney dies of lung cancer on December 15,
+              1966.
+            </p>
+            <h4>1966</h4>
+          </div>
+        </div>
+        <div class="growing-block-up">
+          <div class="growing-up-container" id="up4"></div>
+          <div class="growing-up-container" id="up3"></div>
+          <div class="growing-up-container" id="up2"></div>
+          <div class="growing-up-container" id="up1"></div>
+          <div class="growing-up-container" id="up0"></div>
+        </div>
+        <div class="growing-block-right"></div>
+        <div class="growing-block-down">
+          <div class="growing-down-container" id="down0"></div>
+          <div class="growing-down-container" id="down1"></div>
+          <div class="growing-down-container" id="down2"></div>
+          <div class="growing-down-container" id="down3"></div>
+        </div>
+        <div class="down-text-block">
+          <div class="timeline-container" id="downbox0" style="opacity: 0">
+            <h4>1911</h4>
+            <h5>Walt discovers movies</h5>
+            <p>
+              While living in Missouri, Walt got a paper route to help the
+              family's financial situation. It was while working this job he
+              first discovered movies, and he fell in love with them.
+            </p>
+          </div>
+          <div class="timeline-container" id="downbox1" style="opacity: 0">
+            <h4>1923</h4>
+            <h5>Walt founds a Studio</h5>
+            <p>
+              Over a few years, Walt tried a few different ventures which
+              failed, including the Laugh-O-gram Corporation. He eventually
+              founded Disney Brothers Studio in Hollywood, which would later
+              become Hyperion Studio.
+            </p>
+          </div>
+          <div class="timeline-container" id="downbox2" style="opacity: 0">
+            <h4>1937</h4>
+            <h5>Disney's first full length film</h5>
+            <p>
+              After creating several "short" films, Walt decided to move ahead
+              with full length films. Snow White and the Seven Dwarfs was
+              released.
+            </p>
+          </div>
+          <div class="timeline-container" id="downbox3" style="opacity: 0">
+            <h4>1965</h4>
+            <h5>Disney World ideas begin</h5>
+            <p>
+              Walt purchased land in Florida to build a theme park called Epcot,
+              which would be a peek into the technology of "tomorrow." It was an
+              idea that eventually grew into Disney World.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="end" style="opacity: 0">
+      <h4>
+        I hope you enjoyed this small tribute!<br />If you wish to read more
+        about Walt Disney, check his entire
+        <a
+          id="tribute-link"
+          target="_blank"
+          href="https://en.wikipedia.org/wiki/Walt_Disney"
+          >Wikipedia entry</a
+        >.
+      </h4>
+    </div>
+  </body>
+</html>

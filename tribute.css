@@ -1,0 +1,451 @@
+body,
+html {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    min-width: 633px;
+    min-height: 860px;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+@font-face {
+    font-family: Walt;
+    src: url("https: //th.bing.com/th/id/R.46dd9298f21474e62235020934ced0dd?rik=n32r22JMmm%2fE8w&riu=http%3a%2f%2fwallpapercave.com%2fwp%2fdnLKbJV.jpg&ehk=JpylmLZHLFooBz9nIkgByt0EnfixnHtEEp3INpOWf%2b8%3d&risl=&pid=ImgRaw&r=0");
+}
+
+.block {
+
+    justify-content: center;
+    padding: 40px;
+    min-height: 500px;
+    background-color: pink;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    height: 100%;
+    width: auto;
+    position: relative;
+
+}
+
+.container {
+    margin: 10px;
+}
+
+#title {
+    font-family: Walt;
+}
+
+#sub-title {
+    margin-bottom: 0px;
+}
+
+#img-div {
+    margin-right: 15px;
+    transform: rotate(-3deg);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 10;
+    border-radius: 2px;
+}
+
+.language {
+    position: absolute;
+    right: 10px;
+}
+
+#image {
+    display: block;
+    max-width: 100%;
+    width: 90%;
+    height: auto;
+    margin: auto;
+}
+
+#img-caption {
+    text-align: center;
+}
+
+#image-landing {
+    display: flex;
+    margin: auto;
+    height: 10%;
+    width: 50%;
+    box-shadow: 2px 2px 13px 2px rgba(0, 0, 0, 0.3);
+}
+
+#landing-img-div {
+    margin-top: auto;
+    margin-bottom: auto;
+
+    max-height: 100%;
+    max-width: 100%;
+}
+
+#about {
+    background-image: url("https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124350/mickey-bg-pattern.png"), 
+    linear-gradient(to left, red, orange,blue);
+    background-repeat: repeat;
+
+    padding: 40px;
+}
+
+#about-panel {
+    display: flex;
+    flex-direction: row;
+    border-radius: 12px;
+}
+
+#about-text {
+    background: transparent;
+    margin: 20px;
+    justify-content: space-evenly;
+    width: 1200px;
+    height: 97%;
+    white-space: pre-line;
+}
+
+.panel {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.0), rgba(255, 255, 255, 1), rgba(255, 255, 255, 1), rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
+
+
+    height: 95%;
+    width: auto;
+
+    padding: 20px;
+}
+
+#landing {
+    background: linear-gradient(to left, rgba(0, 0, 0), rgba(0, 0, 0, 0.3))
+}
+
+
+#land-panel {
+
+    position: relative;
+
+    background: rgb(244, 244, 244);
+    margin: auto;
+
+    height: 95%;
+    width: auto;
+
+    padding: 20px;
+}
+
+#header {
+    text-align: center;
+    margin-top: 0px;
+}
+
+.img-div {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.img-div p {
+    margin: 2px 2px 2px 0px;
+}
+
+#last {
+    background-image: url("https://res.cloudinary.com/dt3fvrthq/image/upload/v1534124351/walt-disney-world-bg.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+#arrow-div {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 2;
+    width: 70px;
+    height: 25px;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+}
+
+#arrow-up-div {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 2;
+    width: 70px;
+    height: 25px;
+    top: 8%;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+}
+
+#arrowup0,
+#arrowup1,
+#arrowup2 {
+    transform: scaleY(-1);
+}
+
+#arrow0,
+#arrow1,
+#arrow2,
+#arrowup0,
+#arrowup1,
+#arrowup2 {
+    width: 70px;
+    height: 11px;
+}
+
+#last {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.growing-block-all {
+
+    flex-direction: column;
+    align-content: center;
+}
+
+.growing-block-right {
+
+    width: auto;
+    height: 1.5px;
+    top: 50%;
+    background-color: white;
+
+
+}
+
+.growing-block-up,
+.growing-block-down {
+    display: flex;
+    height: 45px;
+}
+
+.growing-block-up {
+    transform: rotate(180deg);
+}
+
+.growing-up-container {
+    background-color: white;
+    width: 1px;
+    height: 0%;
+    margin-left: 0px;
+    margin-right: auto;
+}
+
+#up0 {
+    margin: 0px;
+}
+
+.growing-down-container {
+    background-color: white;
+    width: 1px;
+    height: 0%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.upper-text-block,
+.down-text-block {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    height: 400px;
+}
+
+.timeline-container.topc {
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+}
+
+.timeline-container.topc h4 {
+    margin-bottom: 1px;
+}
+
+.timeline-container.topc p {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.timeline-container.topc h4 {
+    text-align: center;
+}
+
+#upbox0 {
+    margin-left: 0px;
+}
+
+#upbox4 {
+    margin-right: 0px;
+}
+
+#upbox0 h4 {
+    text-align: left;
+    margin-left: 0px;
+}
+
+#upbox0 p {
+    text-align: center;
+    margin-left: 0px;
+}
+
+#upbox4 h4 {
+    text-align: right;
+    margin-right: 0px;
+}
+
+#upbox4 p {
+    text-align: center;
+    margin-right: 0px;
+}
+
+.small-container {
+    flex-basis: 12.5%;
+    flex-shrink: 0.55;
+}
+
+.timeline-container h4 {
+    margin-bottom: 1px;
+}
+
+
+
+.timeline-container {
+    border-color: rgba(255, 255, 255, 0.7);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    background-color: rgba(50, 50, 50, 0.2);
+    ;
+    width: 500px;
+    height: max-content;
+    padding: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin: 4px;
+    color: rgb(230, 230, 230);
+    text-shadow: 1px 1px black;
+}
+
+.timeline-container h4 {
+    margin-top: 1px;
+}
+
+#end {
+    color: rgba(230, 230, 230, 0.8);
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+}
+
+a:link {
+    color: rgba(230, 230, 230, 0.8);
+    ;
+}
+
+a:visited {
+    color: gainsboro;
+}
+
+a:hover {
+    color: orange;
+}
+
+a:active {
+    color: red;
+}
+
+h3 {
+    font-family: 'Open Sans';
+}
+
+h4 {
+    font-family: 'Open Sans';
+}
+
+p {
+    font-family: 'Slabo 27px';
+}
+
+@media only screen and (max-width: 850px) {
+    h1 {
+        font-size: 2.3em;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+
+    h3 {
+        font-size: 1em;
+        margin-bottom: 2px;
+    }
+
+    p {
+        margin-top: 5px;
+        font-size: 0.7em;
+    }
+}
+
+@media only screen and (min-width: 850px) {
+    h1 {
+        font-size: 3.1em;
+    }
+
+    h2 {
+        font-size: 1.2em;
+    }
+
+    h3 {
+        font-size: 1.3em;
+
+    }
+
+    p {
+
+        font-size: 0.8em;
+    }
+}
+
+@media only screen and (min-width: 1279px) {
+
+    h1 {
+        font-size: 4em;
+        margin-top: 0px;
+        margin-bottom: 5px;
+        color: rgb(48, 48, 48);
+    }
+
+    h2 {
+        font-size: 1.4em;
+        color: rgb(66, 66, 66);
+    }
+
+    h3 {
+        font-size: 3.2em;
+        margin-top: 3px;
+        margin-bottom: 0px;
+        color: rgb(48, 48, 48);
+    }
+
+    p {
+        font-size: 1em;
+        margin-top: 0px;
+        margin-bottom: 30px;
+    }
+
+}
